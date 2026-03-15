@@ -3,23 +3,23 @@ import numpy as np
 import joblib
 from pathlib import Path
 
-# Resolve base directory (works locally and in deployment)
+# Get project root directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Paths to model files
-MODEL_PATH = BASE_DIR / "models" / "diabetes_model.pkl"
-SCALER_PATH = BASE_DIR / "models" / "scaler.pkl"
+# Correct paths (matching your folder names)
+MODEL_PATH = BASE_DIR / "Models" / "diabetes_model.pkl"
+SCALER_PATH = BASE_DIR / "Models" / "scaler.pkl"
 
 # Load model and scaler
 model = joblib.load(MODEL_PATH)
 scaler = joblib.load(SCALER_PATH)
 
-# Title
+# App title
 st.title("Diabetes Prediction System")
 
 st.write("Enter the patient's medical details below:")
 
-# User input fields
+# Input fields
 pregnancies = st.number_input("Number of Pregnancies", min_value=0)
 glucose = st.number_input("Glucose Level", min_value=0)
 blood_pressure = st.number_input("Blood Pressure", min_value=0)
@@ -41,13 +41,12 @@ if st.button("Predict"):
                             dpf,
                             age]])
 
-    # Scale the input data
+    # Scale input
     input_data_scaled = scaler.transform(input_data)
 
-    # Make prediction
+    # Predict
     prediction = model.predict(input_data_scaled)
 
-    # Display result
     if prediction[0] == 1:
         st.error("The patient is likely diabetic.")
     else:
