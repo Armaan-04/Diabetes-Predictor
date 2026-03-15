@@ -1,17 +1,25 @@
 import streamlit as st
 import numpy as np
 import joblib
+from pathlib import Path
 
-# Load trained model and scaler
-model = joblib.load("models/diabetes_model.pkl")
-scaler = joblib.load("models/scaler.pkl")
+# Resolve base directory (works locally and in deployment)
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Paths to model files
+MODEL_PATH = BASE_DIR / "models" / "diabetes_model.pkl"
+SCALER_PATH = BASE_DIR / "models" / "scaler.pkl"
+
+# Load model and scaler
+model = joblib.load(MODEL_PATH)
+scaler = joblib.load(SCALER_PATH)
 
 # Title
 st.title("Diabetes Prediction System")
 
 st.write("Enter the patient's medical details below:")
 
-# User inputs
+# User input fields
 pregnancies = st.number_input("Number of Pregnancies", min_value=0)
 glucose = st.number_input("Glucose Level", min_value=0)
 blood_pressure = st.number_input("Blood Pressure", min_value=0)
@@ -21,13 +29,19 @@ bmi = st.number_input("BMI", min_value=0.0)
 dpf = st.number_input("Diabetes Pedigree Function", min_value=0.0)
 age = st.number_input("Age", min_value=0)
 
-# Prediction button
+# Prediction
 if st.button("Predict"):
 
-    input_data = np.array([[pregnancies, glucose, blood_pressure, skin_thickness,
-                            insulin, bmi, dpf, age]])
+    input_data = np.array([[pregnancies,
+                            glucose,
+                            blood_pressure,
+                            skin_thickness,
+                            insulin,
+                            bmi,
+                            dpf,
+                            age]])
 
-    # Scale input data
+    # Scale the input data
     input_data_scaled = scaler.transform(input_data)
 
     # Make prediction
