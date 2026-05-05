@@ -33,3 +33,4 @@ joblib.dump(model, "models/diabetes_model.pkl")
 joblib.dump(scaler, "models/scaler.pkl")
 
 print("Model training complete and saved.")
+
